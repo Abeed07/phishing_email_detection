@@ -1,5 +1,10 @@
 # Phishing Email Detection using Machine Learning
 
+
+Live Demo: https://phishingemaildetection-h9mjwnvbuoedkcxud4yjse.streamlit.app/
+
+
+
 A machine learning pipeline that classifies emails as "phishing" or
 "legitimate" using NLP text preprocessing, TF-IDF feature extraction, and
 explainable classifiers (Logistic Regression / Multinomial Naive Bayes).
