@@ -1,0 +1,62 @@
+# =============================================================================
+# config.yaml
+# Central configuration for the phishing email detection pipeline.
+# Keeping these values here (instead of hardcoding them in scripts) makes the
+# project reproducible and easy to tune without touching source code.
+# =============================================================================
+
+# ---- Paths -------------------------------------------------------------
+paths:
+  raw_data: "data/raw/emails.csv"
+  processed_data: "data/processed/emails_clean.csv"
+  vectorizer: "models/tfidf_vectorizer.pkl"
+  model: "models/phishing_classifier.pkl"
+  metrics_report: "reports/evaluation_report.md"
+  confusion_matrix_fig: "reports/figures/confusion_matrix.png"
+  model_comparison_fig: "reports/figures/model_comparison.png"
+  class_distribution_fig: "reports/figures/class_distribution.png"
+  top_phishing_words_fig: "reports/figures/top_phishing_words.png"
+  top_legitimate_words_fig: "reports/figures/top_legitimate_words.png"
+  roc_curve_fig: "reports/figures/roc_curve.png"
+  feature_importance_fig: "reports/figures/feature_importance.png"
+
+# ---- Dataset column mapping ---------------------------------------------
+# The raw dataset may use different column names depending on source.
+# Map them here once, and every script reads from this mapping.
+columns:
+  text_column: "text"
+  label_column: "label"
+
+# ---- Label normalization -------------------------------------------------
+# Raw labels can arrive as strings or ints depending on the dataset source.
+# This mapping normalizes them into a consistent binary scheme:
+#   1 = phishing, 0 = legitimate
+label_mapping:
+  phishing_values: ["phishing", "spam", "1", 1, "phish"]
+  legitimate_values: ["legitimate", "ham", "0", 0, "safe"]
+
+# ---- Reproducibility -----------------------------------------------------
+random_seed: 42
+
+# ---- Train/test split -----------------------------------------------------
+test_size: 0.2
+
+# ---- TF-IDF vectorizer -----------------------------------------------------
+tfidf:
+  max_features: 5000
+  ngram_range: [1, 2]   # unigrams + bigrams capture phrases like "verify account"
+  min_df: 2              # ignore terms that appear in fewer than 2 documents
+  max_df: 0.95            # ignore overly common terms (near-stopwords)
+
+# ---- Logistic Regression hyperparameters -----------------------------------
+logistic_regression:
+  C: 1.0
+  max_iter: 1000
+  solver: "liblinear"
+
+# ---- Multinomial Naive Bayes hyperparameters -------------------------------
+naive_bayes:
+  alpha: 1.0
+
+# ---- Explainability ---------------------------------------------------------
+top_n_features: 20   # number of top phishing-indicator words to report
